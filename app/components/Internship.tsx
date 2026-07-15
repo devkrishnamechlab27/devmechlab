@@ -1,58 +1,78 @@
+const internships = [
+  {
+    title: "Mechanical Design Internship",
+    duration: "8 Weeks",
+    mode: "Online",
+    certificate: "QR Verified",
+  },
+  {
+    title: "Industrial Refrigeration & Cryogenics",
+    duration: "10 Weeks",
+    mode: "Hybrid",
+    certificate: "QR Verified",
+  },
+  {
+    title: "CAD/CAM & CNC Programming",
+    duration: "6 Weeks",
+    mode: "Online",
+    certificate: "QR Verified",
+  },
+];
+
 export default function Internship() {
   return (
-    <section className="bg-slate-900 text-white py-20 px-8">
+    <section className="bg-slate-900 text-white py-24 px-8">
+      <div className="max-w-7xl mx-auto">
 
-      <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+        <h2 className="text-5xl font-bold text-center">
+          Internship <span className="text-orange-500">Programs</span>
+        </h2>
 
-        <div>
-          <h2 className="text-5xl font-bold">
-            Engineering
-            <span className="text-orange-500"> Internship </span>
-            Programs
-          </h2>
+        <p className="text-center text-gray-400 mt-4 mb-14">
+          Work on real engineering projects and earn industry-recognized certificates.
+        </p>
 
-          <p className="mt-6 text-gray-400 text-lg leading-8">
-            Gain real-world industrial experience through
-            project-based internships designed for Mechanical,
-            CAD, CNC, Manufacturing, Refrigeration &
-            Cryogenics students.
-          </p>
+        <div className="grid md:grid-cols-3 gap-8">
 
-          <ul className="mt-8 space-y-4 text-lg">
+          {internships.map((item, index) => (
 
-            <li>✅ Live Industry Projects</li>
+            <div
+              key={index}
+              className="bg-slate-800 border border-slate-700 rounded-2xl p-8 hover:border-orange-500 hover:-translate-y-2 transition-all duration-300 shadow-lg"
+            >
 
-            <li>✅ Internship Certificate</li>
+              <div className="text-5xl mb-5">
+                💼
+              </div>
 
-            <li>✅ Letter of Recommendation</li>
+              <h3 className="text-2xl font-bold">
+                {item.title}
+              </h3>
 
-            <li>✅ QR Verified Certificates</li>
+              <div className="mt-5 space-y-2 text-gray-300">
+                <p>📅 {item.duration}</p>
+                <p>🌐 {item.mode}</p>
+                <p>📜 {item.certificate}</p>
+              </div>
 
-            <li>✅ Placement Guidance</li>
+              <div className="mt-6 space-y-2 text-gray-300">
+                <p>✅ Live Projects</p>
+                <p>✅ Mentor Support</p>
+                <p>✅ Letter of Recommendation</p>
+                <p>✅ Placement Guidance</p>
+              </div>
 
-          </ul>
+              <button className="mt-8 w-full bg-blue-600 hover:bg-blue-700 transition py-3 rounded-xl font-semibold">
+                Apply Now
+              </button>
 
-          <button className="mt-10 bg-blue-600 hover:bg-blue-700 px-8 py-4 rounded-xl font-semibold">
-            Apply for Internship
-          </button>
+            </div>
 
-        </div>
-
-        <div className="bg-slate-800 rounded-2xl p-12 text-center">
-
-          <h3 className="text-3xl font-bold text-blue-400">
-            500+
-          </h3>
-
-          <p className="text-gray-400 mt-3">
-            Students trained through
-            Industry Projects
-          </p>
+          ))}
 
         </div>
 
       </div>
-
     </section>
   );
 }
