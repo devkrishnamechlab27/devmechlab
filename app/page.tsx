@@ -4,6 +4,7 @@ import Stats from "./components/Stats";
 import Courses from "./components/Courses";
 import Internship from "./components/Internship";
 import WhyChoose from "./components/WhyChoose";
+import Footer from "./components/Footer";
 
 export default function Home() {
   return (
@@ -14,6 +15,7 @@ export default function Home() {
       <Courses />
       <Internship/>
       <WhyChoose />
+      <Footer />
     </>
   );
 }
