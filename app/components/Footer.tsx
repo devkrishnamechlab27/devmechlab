@@ -61,7 +61,7 @@ export default function Footer() {
 
             <div className="flex items-center gap-3">
               <Phone size={18}/>
-              +91 XXXXX XXXXX
+              +91 9570204678
             </div>
 
             <div className="flex items-center gap-3">

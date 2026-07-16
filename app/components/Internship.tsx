@@ -1,6 +1,18 @@
 const internships = [
   {
-    title: "Mechanical Design Internship",
+    title: "AutoCAD Internship",
+    duration: "8 Weeks",
+    mode: "Online",
+    certificate: "QR Verified",
+  },
+  {
+    title: "SolidWorks Internship",
+    duration: "8 Weeks",
+    mode: "Online",
+    certificate: "QR Verified",
+  },
+  {
+    title: "ANSYS Internship",
     duration: "8 Weeks",
     mode: "Online",
     certificate: "QR Verified",
@@ -13,6 +25,12 @@ const internships = [
   },
   {
     title: "CAD/CAM & CNC Programming",
+    duration: "6 Weeks",
+    mode: "Online",
+    certificate: "QR Verified",
+  },
+  {
+    title: "Python Programming",
     duration: "6 Weeks",
     mode: "Online",
     certificate: "QR Verified",

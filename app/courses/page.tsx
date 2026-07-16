@@ -2,88 +2,11 @@
 import Link from "next/link";
 
 import { useState } from "react";
-
-import {
-  PenTool,
-  Box,
-  Cpu,
-  Snowflake,
-  Settings,
-  Code2,
-  ArrowRight,
-} from "lucide-react";
-
-const courses = [
-  {
-    
-  slug: "autocad-mastery",
-  title: "AutoCAD Mastery",
-    level: "Beginner",
-    duration: "6 Weeks",
-    rating: "4.9",
-    price: "₹999",
-    category: "CAD",
-    icon: PenTool,
-  },
-  {
-    
-  slug: "solidworks-complete",
-  title: "SolidWorks Complete",
-    level: "Intermediate",
-    duration: "8 Weeks",
-    rating: "4.8",
-    price: "₹1499",
-    category: "CAD",
-    icon: Box,
-  },
-  {
-    slug: "ansys-simulation",
-    title: "ANSYS Simulation",
-    level: "Advanced",
-    duration: "10 Weeks",
-    rating: "4.9",
-    price: "₹1999",
-    category: "Mechanical",
-    icon: Cpu,
-  },
-   
-    {
-  slug: "industrial-refrigeration",
-    title: "Industrial Refrigeration",
-    level: "Advanced",
-    duration: "8 Weeks",
-    rating: "5.0",
-    price: "₹2499",
-    category:"Cryogenics",
-    icon: Snowflake,
-  },
-  {
-    slug: "cnc-programming",
-    title: "CNC Programming",
-    level: "Intermediate",
-    duration: "6 Weeks",
-    rating: "4.8",
-    price: "₹1299",
-    category: "Mechanical",
-    icon: Settings,
-  },
-  {
-    slug: "python-for-engineers",
-    title: "Python for Engineers",
-    level: "Beginner",
-    duration: "5 Weeks",
-    rating: "4.9",
-    price: "₹999",
-    category: "Programming",
-    icon: Code2,
-  },
-];
-     const categories = [
-       "All",
-       "CAD",
-       "Mechanical",
-       "Programming",
-       "Cryogenics",
+import { courses } from "../data/courses";
+import { ArrowRight } from "lucide-react";
+const categories = [
+  "All",
+  ...new Set(courses.map((course) => course.category)),
 ];
 
 export default function CoursesPage() {
