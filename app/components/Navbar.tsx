@@ -1,10 +1,41 @@
 "use client";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { supabase } from "@/lib/supabase";
 import Link from "next/link";
 import { Rocket } from "lucide-react";
 
 export default function Navbar() {
   const pathname = usePathname();
+  const router = useRouter();
+
+const [loggedIn, setLoggedIn] = useState(false);
+
+useEffect(() => {
+  async function checkUser() {
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+
+    setLoggedIn(!!session);
+  }
+
+  checkUser();
+
+  const {
+    data: { subscription },
+  } = supabase.auth.onAuthStateChange((_event, session) => {
+    setLoggedIn(!!session);
+  });
+
+  return () => subscription.unsubscribe();
+}, []);
+
+async function handleLogout() {
+  await supabase.auth.signOut();
+ router.replace("/");
+ router.refresh();
+}
   return (
     <header className="sticky top-0 z-50 backdrop-blur-md bg-slate-950/80 border-b border-slate-800">
       <nav className="max-w-7xl mx-auto flex items-center justify-between px-8 py-5">
@@ -87,10 +118,42 @@ export default function Navbar() {
 </div>
 
         {/* Button */}
-        <button className="hidden md:flex items-center gap-2 bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-xl transition-all hover:scale-105 font-semibold">
-          <Rocket size={18} />
-          Get Started
-        </button>
+       <div className="hidden md:flex items-center gap-3">
+  {loggedIn ? (
+    <>
+      <Link
+        href="/dashboard"
+        className="bg-blue-600 hover:bg-blue-700 px-5 py-3 rounded-xl font-semibold transition"
+      >
+        Dashboard
+      </Link>
+
+      <button
+        onClick={handleLogout}
+        className="bg-red-600 hover:bg-red-700 px-5 py-3 rounded-xl font-semibold transition"
+      >
+        Logout
+      </button>
+    </>
+  ) : (
+    <>
+      <Link
+        href="/login"
+        className="text-gray-300 hover:text-white transition"
+      >
+        Login
+      </Link>
+
+      <Link
+        href="/signup"
+        className="bg-blue-600 hover:bg-blue-700 px-5 py-3 rounded-xl font-semibold transition flex items-center gap-2"
+      >
+        <Rocket size={18} />
+        Sign Up
+      </Link>
+    </>
+  )}
+</div>
 
       </nav>
     </header>

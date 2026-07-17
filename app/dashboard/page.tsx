@@ -17,7 +17,7 @@ export default function DashboardPage() {
       } = await supabase.auth.getSession();
 
       if (!session) {
-        router.push("/login");
+        router.replace("/login");
         return;
       }
 
@@ -30,7 +30,7 @@ export default function DashboardPage() {
 
   async function logout() {
     await supabase.auth.signOut();
-    router.push("/login");
+   router.replace("/login");
   }
 
   if (loading) {
