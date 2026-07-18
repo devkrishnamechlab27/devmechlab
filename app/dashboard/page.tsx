@@ -1,38 +1,61 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
+
+import DashboardHeader from "@/app/components/DashboardHeader";
+import CompletionBar from "@/app/components/CompletionBar";
+import ProfileCard from "@/app/components/ProfileCard";
+import StatsCards from "@/app/components/StatsCards";
+import QuickActions from "@/app/components/QuickActions";
 
 export default function DashboardPage() {
   const router = useRouter();
 
   const [loading, setLoading] = useState(true);
-  const [userEmail, setUserEmail] = useState("");
+
+  const [email, setEmail] = useState("");
+
+  const [fullName, setFullName] = useState("");
+  const [college, setCollege] = useState("");
+  const [branch, setBranch] = useState("");
+  const [phone, setPhone] = useState("");
 
   useEffect(() => {
-    async function checkUser() {
+    async function loadDashboard() {
       const {
         data: { session },
       } = await supabase.auth.getSession();
 
       if (!session) {
-        router.replace("/login");
+        router.push("/login");
         return;
       }
 
-      setUserEmail(session.user.email ?? "");
+      setEmail(session.user.email ?? "");
+
+      const { data } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("id", session.user.id)
+        .single();
+        
+        console.log("Dashboard Profile:", data);
+        console.log("User ID:", session.user.id);
+
+      if (data) {
+        setFullName(data.full_name ?? "");
+        setCollege(data.college ?? "");
+        setBranch(data.branch ?? "");
+        setPhone(data.phone ?? "");
+      }
+
       setLoading(false);
     }
 
-    checkUser();
+    loadDashboard();
   }, [router]);
-
-  async function logout() {
-    await supabase.auth.signOut();
-   router.replace("/login");
-  }
 
   if (loading) {
     return (
@@ -42,42 +65,28 @@ export default function DashboardPage() {
     );
   }
 
+  const completion =
+    [fullName, college, branch, phone].filter(Boolean).length * 25;
+
   return (
     <main className="min-h-screen bg-slate-950 text-white p-10">
 
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-7xl mx-auto space-y-8">
 
-        <div className="flex justify-between items-center">
+        <DashboardHeader email={email} />
 
-          <div>
+        <CompletionBar percentage={completion} />
 
-           <h1 className="text-5xl font-bold">
-                 Welcome 👋
-          </h1>
+        <ProfileCard
+          fullName={fullName}
+          college={college}
+          branch={branch}
+          phone={phone}
+        />
 
-             <p className="text-gray-400 mt-3">
-                {userEmail}
-            </p>
+        <StatsCards />
 
-           <div className="mt-6">
-             <Link
-               href="/profile"
-               className="inline-block bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-xl font-semibold"
-            >
-                  Edit Profile
-            </Link>
-          </div>
-
-          </div>
-
-          <button
-            onClick={logout}
-            className="bg-red-600 hover:bg-red-700 px-6 py-3 rounded-xl font-semibold"
-          >
-            Logout
-          </button>
-
-        </div>
+        <QuickActions />
 
       </div>
 
