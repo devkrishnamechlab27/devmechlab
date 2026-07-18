@@ -5,7 +5,7 @@ import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
 
 import DashboardHeader from "@/app/components/DashboardHeader";
-import CompletionBar from "@/app/components/CompletionBar";
+import RecentActivity from "@/app/components/RecentActivity";
 import ProfileCard from "@/app/components/ProfileCard";
 import StatsCards from "@/app/components/StatsCards";
 import QuickActions from "@/app/components/QuickActions";
@@ -50,7 +50,7 @@ export default function DashboardPage() {
         setBranch(data.branch ?? "");
         setPhone(data.phone ?? "");
       }
-
+      console.log("Dashboard Data:", data);
       setLoading(false);
     }
 
@@ -73,19 +73,21 @@ export default function DashboardPage() {
 
       <div className="max-w-7xl mx-auto space-y-8">
 
-        <DashboardHeader email={email} />
-
-        <CompletionBar percentage={completion} />
+        <DashboardHeader
+  fullName={fullName}
+/>
+        
 
         <ProfileCard
-          fullName={fullName}
-          college={college}
-          branch={branch}
-          phone={phone}
-        />
+  fullName={fullName}
+  email={email}
+  college={college}
+  branch={branch}
+  phone={phone}
+/>
 
         <StatsCards />
-
+        <RecentActivity />
         <QuickActions />
 
       </div>

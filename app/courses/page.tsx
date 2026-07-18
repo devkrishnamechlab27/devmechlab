@@ -1,125 +1,111 @@
 "use client";
-import Link from "next/link";
 
-import { useState } from "react";
-import { courses } from "../data/courses";
-import { ArrowRight } from "lucide-react";
-const categories = [
-  "All",
-  ...new Set(courses.map((course) => course.category)),
-];
+import { useEffect, useState } from "react";
+import { supabase } from "@/lib/supabase";
+import Link from "next/link";
+import Image from "next/image";
+
+type Course = {
+  id: number;
+  title: string;
+  slug: string;
+  description: string;
+  level: string;
+  duration: string;
+  instructor: string;
+  image: string;
+  price: string;
+};
 
 export default function CoursesPage() {
- const [search, setSearch] = useState("");
- const [selectedCategory, setSelectedCategory] = useState("All");
- const filteredCourses = courses.filter((course) => {
-  const matchesSearch = course.title
-    .toLowerCase()
-    .includes(search.toLowerCase());
+  const [courses, setCourses] = useState<Course[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const matchesCategory =
-    selectedCategory === "All" ||
-    course.category === selectedCategory;
+  useEffect(() => {
+    async function loadCourses() {
+      const { data, error } = await supabase
+  .from("courses")
+  .select("*")
+  .order("id");
 
-  return matchesSearch && matchesCategory;
-});
+console.log("Courses:", data);
+console.log("Error:", error);
+
+      if (!error && data) {
+        setCourses(data);
+      }
+
+      setLoading(false);
+    }
+
+    loadCourses();
+  }, []);
+
+  if (loading) {
+    return (
+      <main className="min-h-screen bg-slate-950 flex items-center justify-center text-white text-2xl">
+        Loading Courses...
+      </main>
+    );
+  }
+
   return (
-    <main className="min-h-screen bg-slate-950 text-white px-8 py-20">
+    <main className="min-h-screen bg-slate-950 text-white p-10">
       <div className="max-w-7xl mx-auto">
 
-        <h1 className="text-5xl font-bold">
-          Engineering <span className="text-blue-500">Courses</span>
+        <h1 className="text-5xl font-bold mb-4">
+          Explore Courses
         </h1>
 
-        <p className="mt-5 text-gray-400 text-lg">
-          Learn industry-ready engineering skills from experienced mentors.
+        <p className="text-gray-400 mb-10">
+          Learn industry-ready skills with DevMechLab.
         </p>
 
-        <input
-          type="text"
-         placeholder="🔍 Search Courses..."
-         value={search}
-         onChange={(e) => setSearch(e.target.value)}
-         className="w-full mt-10 bg-slate-900 border border-slate-800 rounded-xl px-5 py-4 outline-none focus:border-blue-500"
-        />
-        <div className="flex flex-wrap gap-3 mt-8">
+        <div className="grid md:grid-cols-3 gap-8">
 
-  {categories.map((category) => (
+          {courses.map((course) => (
+            <div
+              key={course.id}
+              className="bg-slate-900 rounded-2xl border border-slate-800 overflow-hidden"
+            >
+              <Image
+                src={course.image}
+                alt={course.title}
+                width={600}
+                height={340}
+                className="w-full h-48 object-cover"
+              />
 
-    <button
-      key={category}
-      onClick={() => setSelectedCategory(category)}
-      className={`px-5 py-2 rounded-full transition ${
-        selectedCategory === category
-          ? "bg-blue-600 text-white"
-          : "bg-slate-800 text-gray-300 hover:bg-slate-700"
-      }`}
-    >
-      {category}
-    </button>
+              <div className="p-6">
 
-  ))}
-
-</div>
-
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
-
-          {filteredCourses.map((course, index) => {
-            const Icon = course.icon;
-
-            return (
-              <div
-                key={index}
-                className="bg-slate-900 border border-slate-800 rounded-2xl p-8 hover:border-blue-500 transition-all hover:-translate-y-2"
-              >
-
-                <Icon className="text-blue-400" size={45} />
-
-                <h2 className="text-2xl font-bold mt-5">
+                <h2 className="text-2xl font-bold">
                   {course.title}
                 </h2>
 
-                <div className="flex justify-between mt-4 text-gray-400 text-sm">
-                  <span>{course.level}</span>
-                  <span>{course.duration}</span>
-                </div>
+                <p className="text-gray-400 mt-2">
+                  {course.level}
+                </p>
 
-                <div className="flex justify-between mt-4">
+                <p className="text-gray-500">
+                  {course.duration}
+                </p>
 
-                  <span>⭐ {course.rating}</span>
+                <p className="mt-2 font-semibold text-green-400">
+                  {course.price}
+                </p>
 
-                  <span className="text-orange-400 font-bold">
-                    {course.price}
-                  </span>
-
-                </div>
-
-         <Link
-             href={`/courses/${course.slug}`}
-             className="mt-8 w-full bg-blue-600 hover:bg-blue-700 py-3 rounded-xl flex justify-center items-center gap-2 transition"
-        >
-                  View Details
-
-             <ArrowRight size={18} />
-             </Link>
+                <Link
+                  href={`/courses/${course.slug}`}
+                  className="block mt-6 bg-blue-600 hover:bg-blue-700 text-center py-3 rounded-xl font-semibold"
+                >
+                  View Course
+                </Link>
 
               </div>
-            );
-          })}
+            </div>
+          ))}
 
         </div>
-        {filteredCourses.length === 0 && (
-         <div className="text-center mt-16">
-      <h2 className="text-3xl font-bold text-gray-300">
-          🔍 No courses found
-      </h2>
-
-        <p className="mt-3 text-gray-500">
-          Try searching with another keyword.
-        </p>
-     </div>
-)}
-
       </div>
     </main>
   );
