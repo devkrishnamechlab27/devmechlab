@@ -1,11 +1,11 @@
 "use client";
-
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 
 export default function ProfilePage() {
   const [loading, setLoading] = useState(true);
-
+  const router = useRouter();
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
   const [college, setCollege] = useState("");
@@ -53,7 +53,7 @@ async function saveProfile() {
   if (!user) return;
   
   console.log("Current User ID:", user.id);
-  
+
   const { error } = await supabase
     .from("profiles")
     .update({
@@ -74,6 +74,8 @@ async function saveProfile() {
 }
 
   alert("Profile updated successfully!");
+
+   router.push("/dashboard");
 }
 
   if (loading) {

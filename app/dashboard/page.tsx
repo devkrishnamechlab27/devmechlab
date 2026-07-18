@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
@@ -50,13 +51,22 @@ export default function DashboardPage() {
 
           <div>
 
-            <h1 className="text-5xl font-bold">
-              Welcome 👋
-            </h1>
+           <h1 className="text-5xl font-bold">
+                 Welcome 👋
+          </h1>
 
-            <p className="text-gray-400 mt-3">
-              {userEmail}
+             <p className="text-gray-400 mt-3">
+                {userEmail}
             </p>
+
+           <div className="mt-6">
+             <Link
+               href="/profile"
+               className="inline-block bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-xl font-semibold"
+            >
+                  Edit Profile
+            </Link>
+          </div>
 
           </div>
 
