@@ -1,6 +1,6 @@
-import { courses } from "../../data/courses";
+import { supabase } from "@/lib/supabase";
 import { notFound } from "next/navigation";
-
+import Link from "next/link";
 interface PageProps {
   params: Promise<{
     slug: string;
@@ -10,11 +10,15 @@ interface PageProps {
 export default async function CourseDetails({ params }: PageProps) {
   const { slug } = await params;
 
-  const course = courses.find((c) => c.slug === slug);
+  const { data: course, error } = await supabase
+  .from("courses")
+  .select("*")
+  .eq("slug", slug)
+  .single();
 
-  if (!course) {
-    notFound();
-  }
+if (error || !course) {
+  return notFound();
+}
 
   return (
     <main className="min-h-screen bg-slate-950 text-white px-8 py-20">
@@ -47,9 +51,7 @@ export default async function CourseDetails({ params }: PageProps) {
             ⭐ {course.rating}
           </span>
 
-          <span className="bg-slate-800 px-4 py-2 rounded-full">
-            {course.price}
-          </span>
+         
         </div>
 
         
@@ -86,7 +88,8 @@ export default async function CourseDetails({ params }: PageProps) {
 
   <div className="grid md:grid-cols-2 gap-4">
 
-    {course.whatYouWillLearn?.map((item, index) => (
+    {Array.isArray(course.whatYouWillLearn) &&
+  course.whatYouWillLearn.map((item: string, index: number) => (
 
       <div
         key={index}
@@ -108,7 +111,8 @@ export default async function CourseDetails({ params }: PageProps) {
 
   <div className="space-y-3">
 
-    {course.requirements?.map((item, index) => (
+    {Array.isArray(course.requirements) &&
+  course.requirements.map((item: string, index: number) => (
 
       <div
         key={index}
@@ -218,9 +222,12 @@ export default async function CourseDetails({ params }: PageProps) {
   </div>
 
 </div>
-    <button className="w-full mt-8 bg-blue-600 hover:bg-blue-700 py-4 rounded-xl font-bold text-lg transition">
-      Enroll Now
-    </button>
+    <Link
+  href={`/checkout/${course.slug}`}
+  className="block w-full mt-8 bg-blue-600 hover:bg-blue-700 py-4 rounded-xl font-bold text-lg text-center transition"
+>
+  Enroll Now
+</Link>
 
   </div>
 

@@ -1,7 +1,7 @@
 import Image from "next/image";
-import { internships } from "../../data/internships";
+import { supabase } from "@/lib/supabase";
 import { notFound } from "next/navigation";
-
+import Link from "next/link";
 interface PageProps {
   params: Promise<{
     slug: string;
@@ -10,12 +10,26 @@ interface PageProps {
 
 export default async function InternshipDetails({ params }: PageProps) {
   const { slug } = await params;
+  
 
-  const internship = internships.find((item) => item.slug === slug);
+  const { data: internship, error } = await supabase
+  .from("internships")
+  .select("*")
+  .eq("slug", slug)
+  .single();
 
-  if (!internship) {
-    notFound();
-  }
+  const whatYouWillLearn =
+  (internship.what_you_will_learn as string[]) || [];
+
+const liveProjects =
+  (internship.live_projects as string[]) || [];
+
+const includes =
+  (internship.includes as string[]) || [];
+
+if (error || !internship) {
+  return notFound();
+}
 
   return (
     <main className="min-h-screen bg-slate-950 text-white px-8 py-20">
@@ -44,18 +58,22 @@ export default async function InternshipDetails({ params }: PageProps) {
         </p>
 
         <div className="flex flex-wrap gap-4 mt-8">
-          <span className="bg-blue-600 px-4 py-2 rounded-full">
-            {internship.duration}
-          </span>
 
-          <span className="bg-orange-500 px-4 py-2 rounded-full">
-            {internship.fee}
-          </span>
+  <span className="bg-blue-600 px-4 py-2 rounded-full">
+    {internship.level}
+  </span>
 
-          <span className="bg-green-600 px-4 py-2 rounded-full">
-            ⭐ {internship.rating}
-          </span>
-        </div>
+  <span className="bg-orange-500 px-4 py-2 rounded-full">
+    {internship.duration}
+  </span>
+
+  <span className="bg-green-600 px-4 py-2 rounded-full">
+    ⭐ {internship.rating}
+  </span>
+
+ 
+
+</div>
         
 
         {/* What You'll Learn */}
@@ -68,7 +86,7 @@ export default async function InternshipDetails({ params }: PageProps) {
 
   <div className="grid md:grid-cols-2 gap-5">
 
-    {internship.whatYouWillLearn?.map((item, index) => (
+    {whatYouWillLearn.map((item: string, index: number) => (
 
       <div
         key={index}
@@ -95,7 +113,7 @@ export default async function InternshipDetails({ params }: PageProps) {
 
   <div className="grid md:grid-cols-2 gap-5">
 
-    {internship.liveProjects?.map((item, index) => (
+    {liveProjects.map((item: string, index: number) => (
 
       <div
         key={index}
@@ -120,7 +138,7 @@ export default async function InternshipDetails({ params }: PageProps) {
 
   <div className="grid md:grid-cols-2 gap-5">
 
-    {internship.includes?.map((item, index) => (
+    {includes.map((item: string, index: number) => (
 
       <div
         key={index}
@@ -175,9 +193,9 @@ export default async function InternshipDetails({ params }: PageProps) {
     </div>
 
     <div className="bg-slate-900 rounded-2xl p-8 text-center border border-slate-800">
-      <h3 className="text-5xl font-bold text-purple-500">
-        {internship.liveProjects?.length}
-      </h3>
+  <h3 className="text-5xl font-bold text-purple-500">
+    {liveProjects.length}+
+  </h3>
 
       <p className="mt-3 text-gray-400">
         Live Projects
@@ -196,7 +214,7 @@ export default async function InternshipDetails({ params }: PageProps) {
   <div className="bg-slate-900 rounded-3xl border border-slate-800 p-8 shadow-xl">
 
     <h2 className="text-5xl font-bold text-orange-400">
-      {internship.fee}
+      {internship.price}
     </h2>
 
     <div className="space-y-5 mt-8 text-lg">
@@ -205,7 +223,7 @@ export default async function InternshipDetails({ params }: PageProps) {
 
       <p>📚 {internship.duration}</p>
 
-      <p>👨‍🏫 {internship.instructor}</p>
+      <p>👨‍🏫 {internship.mentor}</p>
 
       <p>🌐 {internship.language}</p>
 
@@ -219,9 +237,12 @@ export default async function InternshipDetails({ params }: PageProps) {
 
     </div>
 
-    <button className="w-full mt-10 bg-blue-600 hover:bg-blue-700 py-4 rounded-xl text-xl font-bold transition">
-      Enroll Now
-    </button>
+   <Link
+  href={`/internships/checkout/${internship.slug}`}
+  className="block w-full mt-10 bg-blue-600 hover:bg-blue-700 py-4 rounded-xl text-xl font-bold text-center transition"
+>
+  Enroll Now
+</Link>
 
   </div>
 

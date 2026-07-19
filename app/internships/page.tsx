@@ -1,126 +1,127 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import { supabase } from "@/lib/supabase";
 import Link from "next/link";
-import { useState } from "react";
-import { internships } from "../data/internships";
-import { ArrowRight } from "lucide-react";
+import Image from "next/image";
 
-const categories = [
-  "All",
-  "Mechanical",
-  "Manufacturing",
-  "Programming",
-  "Cryogenics",
-];
+type Internship = {
+  id: number;
+  title: string;
+  slug: string;
+  description: string;
+  level: string;
+  duration: string;
+  mentor: string;
+  image: string;
+  price: string;
+  rating: number;
+  students: number;
+};
 
-export default function InternshipPage() {
-  const [search, setSearch] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("All");
+export default function InternshipsPage() {
+  const [internships, setInternships] = useState<Internship[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const filteredInternships = internships.filter((item) => {
-    const matchesSearch = item.title
-      .toLowerCase()
-      .includes(search.toLowerCase());
+  useEffect(() => {
+    async function loadInternships() {
+      const { data, error } = await supabase
+        .from("internships")
+        .select("*")
+        .order("id");
+        console.log("Internships:", data);
+        console.log("Error:", error);
 
-    const matchesCategory =
-      selectedCategory === "All" ||
-      item.category === selectedCategory;
+      if (!error && data) {
+        setInternships(data);
+      }
 
-    return matchesSearch && matchesCategory;
-  });
+      setLoading(false);
+    }
+
+    loadInternships();
+  }, []);
+
+  if (loading) {
+    return (
+      <main className="min-h-screen bg-slate-950 flex items-center justify-center text-white text-2xl">
+        Loading Internships...
+      </main>
+    );
+  }
 
   return (
-    <main className="min-h-screen bg-slate-950 text-white px-8 py-20">
+    <main className="min-h-screen bg-slate-950 text-white p-10">
 
       <div className="max-w-7xl mx-auto">
 
-        <h1 className="text-5xl font-bold">
-          Training <span className="text-blue-500">Internships</span>
+        <h1 className="text-5xl font-bold mb-4">
+          Explore Internships
         </h1>
 
-        <p className="mt-5 text-gray-400 text-lg">
-          Industry-oriented training internships with real projects,
-          mentor support, certificate and letter of recommendation.
+        <p className="text-gray-400 mb-10">
+          Gain practical industry experience with DevMechLab internships.
         </p>
 
-        <input
-          type="text"
-          placeholder="🔍 Search Internship..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="w-full mt-10 bg-slate-900 border border-slate-800 rounded-xl px-5 py-4 outline-none focus:border-blue-500"
-        />
+        <div className="grid md:grid-cols-3 gap-8">
 
-        <div className="flex flex-wrap gap-3 mt-8">
+          {internships.map((internship) => (
 
-          {categories.map((category) => (
-
-            <button
-              key={category}
-              onClick={() => setSelectedCategory(category)}
-              className={`px-5 py-2 rounded-full transition ${
-                selectedCategory === category
-                  ? "bg-blue-600"
-                  : "bg-slate-800 hover:bg-slate-700"
-              }`}
+            <div
+              key={internship.id}
+              className="bg-slate-900 rounded-2xl border border-slate-800 overflow-hidden hover:border-blue-500 transition"
             >
-              {category}
-            </button>
 
-          ))}
+              <Image
+                src={internship.image}
+                alt={internship.title}
+                width={600}
+                height={340}
+                className="w-full h-48 object-cover"
+              />
 
-        </div>
+              <div className="p-6">
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
-
-          {filteredInternships.map((item) => {
-
-            const Icon = item.icon;
-
-            return (
-
-              <div
-                key={item.slug}
-                className="bg-slate-900 border border-slate-800 rounded-2xl p-8 hover:border-blue-500 transition"
-              >
-
-                <Icon size={45} className="text-blue-400" />
-
-                <h2 className="text-2xl font-bold mt-5">
-                  {item.title}
+                <h2 className="text-2xl font-bold">
+                  {internship.title}
                 </h2>
 
-                <p className="text-gray-400 mt-3">
-                  {item.description}
+                <p className="text-gray-400 mt-2">
+                  {internship.level}
                 </p>
 
-                <div className="flex justify-between mt-6">
+                <p className="text-gray-500">
+                  {internship.duration}
+                </p>
 
-                  <span>{item.duration}</span>
+                <div className="flex justify-between mt-4">
 
-                  <span className="text-orange-400 font-bold">
-                    {item.fee}
+                  <span className="text-yellow-400">
+                    ⭐ {internship.rating}
+                  </span>
+
+                  <span className="text-gray-400">
+                    👨‍🎓 {internship.students}
                   </span>
 
                 </div>
 
-                <div className="mt-4">
-                  ⭐ {item.rating}
-                </div>
+                <p className="mt-4 text-green-400 font-bold text-xl">
+                  {internship.price}
+                </p>
 
                 <Link
-                  href={`/internships/${item.slug}`}
-                  className="mt-8 w-full bg-blue-600 hover:bg-blue-700 py-3 rounded-xl flex justify-center items-center gap-2"
+                  href={`/internships/${internship.slug}`}
+                  className="block mt-6 bg-blue-600 hover:bg-blue-700 text-center py-3 rounded-xl font-semibold"
                 >
-                  View Details
-                  <ArrowRight size={18} />
+                  View Internship
                 </Link>
 
               </div>
 
-            );
+            </div>
 
-          })}
+          ))}
 
         </div>
 
