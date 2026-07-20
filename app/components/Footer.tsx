@@ -1,4 +1,5 @@
-import { Mail, Phone, MapPin } from "lucide-react";
+import { Mail, Phone, MapPin, } from "lucide-react";
+import { BadgeCheck } from "lucide-react";
 
 import {
   FaLinkedin,
@@ -67,6 +68,15 @@ export default function Footer() {
             <div className="flex items-center gap-3">
               <MapPin size={18}/>
               India
+            </div>
+          <div className="flex items-center gap-3">
+              <BadgeCheck size={18} />
+               <span>
+                 Designed & Developed by{" "}
+              <span className="font-semibold text-blue-400">
+                     K.K. Ranjan
+              </span>
+              </span>
             </div>
 
           </div>

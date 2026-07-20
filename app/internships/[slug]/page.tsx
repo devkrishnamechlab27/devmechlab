@@ -1,7 +1,9 @@
+import Link from "next/link";
 import Image from "next/image";
 import { supabase } from "@/lib/supabase";
 import { notFound } from "next/navigation";
-import Link from "next/link";
+
+import ProtectedEnrollButton from "@/components/ProtectedEnrollButton";
 interface PageProps {
   params: Promise<{
     slug: string;
@@ -237,12 +239,9 @@ if (error || !internship) {
 
     </div>
 
-   <Link
+   <ProtectedEnrollButton
   href={`/internships/checkout/${internship.slug}`}
-  className="block w-full mt-10 bg-blue-600 hover:bg-blue-700 py-4 rounded-xl text-xl font-bold text-center transition"
->
-  Enroll Now
-</Link>
+/>
 
   </div>
 

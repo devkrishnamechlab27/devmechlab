@@ -103,10 +103,7 @@ export default function Courses() {
                   <p>⭐ {course.rating} Rating</p>
                 </div>
 
-                <button className="mt-8 w-full flex items-center justify-center gap-2 bg-orange-500 hover:bg-orange-600 py-3 rounded-xl font-semibold transition">
-                  Enroll Now
-                  <ArrowRight size={18} />
-                </button>
+               
 
               </div>
             );

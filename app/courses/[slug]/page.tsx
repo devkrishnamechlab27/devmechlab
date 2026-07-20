@@ -1,6 +1,8 @@
+import Link from "next/link";
+import ProtectedEnrollButton from "@/components/ProtectedEnrollButton";
 import { supabase } from "@/lib/supabase";
 import { notFound } from "next/navigation";
-import Link from "next/link";
+
 interface PageProps {
   params: Promise<{
     slug: string;
@@ -222,12 +224,9 @@ if (error || !course) {
   </div>
 
 </div>
-    <Link
+    <ProtectedEnrollButton
   href={`/checkout/${course.slug}`}
-  className="block w-full mt-8 bg-blue-600 hover:bg-blue-700 py-4 rounded-xl font-bold text-lg text-center transition"
->
-  Enroll Now
-</Link>
+/>
 
   </div>
 

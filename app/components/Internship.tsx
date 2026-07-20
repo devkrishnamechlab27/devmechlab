@@ -80,9 +80,7 @@ export default function Internship() {
                 <p>✅ Placement Guidance</p>
               </div>
 
-              <button className="mt-8 w-full bg-blue-600 hover:bg-blue-700 transition py-3 rounded-xl font-semibold">
-                Apply Now
-              </button>
+              
 
             </div>
 
