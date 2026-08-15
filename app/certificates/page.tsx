@@ -7,7 +7,8 @@ export default function CertificatesPage() {
         </h1>
 
         <p className="text-gray-400 mb-10">
-          Certificates you earn from DevMechLab courses and internships will appear here.
+          Certificates you earn from DevMechLab courses and internships
+          will appear here.
         </p>
 
         <div className="bg-slate-900 border border-slate-800 rounded-2xl p-12 text-center">

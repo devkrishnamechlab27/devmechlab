@@ -1,6 +1,6 @@
-import { supabase } from "@/lib/supabase";
+import { createClient } from "@/lib/supabase/server";
 import { notFound } from "next/navigation";
-
+import PaymentButton from "@/components/PaymentButton";
 
 
 interface Props {
@@ -11,7 +11,7 @@ interface Props {
 
 export default async function CheckoutPage({ params }: Props) {
   const { slug } = await params;
-
+  const supabase = await createClient();
   const { data: course } = await supabase
     .from("courses")
     .select("*")
@@ -74,11 +74,7 @@ export default async function CheckoutPage({ params }: Props) {
               {course.price}
             </h2>
 
-            <button
-              className="w-full mt-8 bg-blue-600 hover:bg-blue-700 py-4 rounded-xl text-xl font-bold"
-            >
-              Proceed to Payment
-            </button>
+           <PaymentButton course={course} />
 
             <p className="text-gray-500 text-sm mt-6 text-center">
               Secure checkout powered by DevMechLab

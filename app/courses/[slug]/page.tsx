@@ -1,6 +1,6 @@
 import Link from "next/link";
 import ProtectedEnrollButton from "@/components/ProtectedEnrollButton";
-import { supabase } from "@/lib/supabase";
+import { createClient } from "@/lib/supabase/server";
 import { notFound } from "next/navigation";
 
 interface PageProps {
@@ -11,7 +11,7 @@ interface PageProps {
 
 export default async function CourseDetails({ params }: PageProps) {
   const { slug } = await params;
-
+  const supabase = await createClient();
   const { data: course, error } = await supabase
   .from("courses")
   .select("*")
@@ -224,8 +224,10 @@ if (error || !course) {
   </div>
 
 </div>
-    <ProtectedEnrollButton
+   <ProtectedEnrollButton
   href={`/checkout/${course.slug}`}
+  courseId={course.id}
+  slug={course.slug}
 />
 
   </div>

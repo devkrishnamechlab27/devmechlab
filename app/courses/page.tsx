@@ -1,9 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { supabase } from "@/lib/supabase";
+import { supabase } from "@/lib/supabase/client";
 import Link from "next/link";
 import Image from "next/image";
+import CourseCard from "@/components/CourseCard";
 
 type Course = {
   id: number;
@@ -20,10 +21,11 @@ type Course = {
 export default function CoursesPage() {
   const [courses, setCourses] = useState<Course[]>([]);
   const [loading, setLoading] = useState(true);
-
+  
   useEffect(() => {
     async function loadCourses() {
       const { data, error } = await supabase
+      
   .from("courses")
   .select("*")
   .order("id");
@@ -64,46 +66,11 @@ console.log("Error:", error);
         <div className="grid md:grid-cols-3 gap-8">
 
           {courses.map((course) => (
-            <div
-              key={course.id}
-              className="bg-slate-900 rounded-2xl border border-slate-800 overflow-hidden"
-            >
-              <Image
-                src={course.image}
-                alt={course.title}
-                width={600}
-                height={340}
-                className="w-full h-48 object-cover"
-              />
-
-              <div className="p-6">
-
-                <h2 className="text-2xl font-bold">
-                  {course.title}
-                </h2>
-
-                <p className="text-gray-400 mt-2">
-                  {course.level}
-                </p>
-
-                <p className="text-gray-500">
-                  {course.duration}
-                </p>
-
-                <p className="mt-2 font-semibold text-green-400">
-                  {course.price}
-                </p>
-
-                <Link
-                  href={`/courses/${course.slug}`}
-                  className="block mt-6 bg-blue-600 hover:bg-blue-700 text-center py-3 rounded-xl font-semibold"
-                >
-                  View Course
-                </Link>
-
-              </div>
-            </div>
-          ))}
+  <CourseCard
+    key={course.id}
+    course={course}
+  />
+))}
 
         </div>
       </div>

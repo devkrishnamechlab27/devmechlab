@@ -1,13 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
+import { supabase } from "@/lib/supabase/client";
 
 import DashboardHeader from "@/app/components/DashboardHeader";
-import RecentActivity from "@/app/components/RecentActivity";
 import ProfileCard from "@/app/components/ProfileCard";
 import StatsCards from "@/app/components/StatsCards";
+import RecentActivity from "@/app/components/RecentActivity";
 import QuickActions from "@/app/components/QuickActions";
 
 export default function DashboardPage() {
@@ -25,24 +25,25 @@ export default function DashboardPage() {
   useEffect(() => {
     async function loadDashboard() {
       const {
-        data: { session },
-      } = await supabase.auth.getSession();
+        data: { user },
+      } = await supabase.auth.getUser();
 
-      if (!session) {
+      if (!user) {
         router.push("/login");
         return;
       }
 
-      setEmail(session.user.email ?? "");
+      setEmail(user.email ?? "");
 
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from("profiles")
         .select("*")
-        .eq("id", session.user.id)
+        .eq("id", user.id)
         .single();
-        
-        console.log("Dashboard Profile:", data);
-        console.log("User ID:", session.user.id);
+
+      if (error) {
+        console.error(error);
+      }
 
       if (data) {
         setFullName(data.full_name ?? "");
@@ -50,7 +51,7 @@ export default function DashboardPage() {
         setBranch(data.branch ?? "");
         setPhone(data.phone ?? "");
       }
-      console.log("Dashboard Data:", data);
+
       setLoading(false);
     }
 
@@ -65,33 +66,27 @@ export default function DashboardPage() {
     );
   }
 
-  const completion =
-    [fullName, college, branch, phone].filter(Boolean).length * 25;
-
   return (
     <main className="min-h-screen bg-slate-950 text-white p-10">
-
       <div className="max-w-7xl mx-auto space-y-8">
 
-        <DashboardHeader
-  fullName={fullName}
-/>
-        
+        <DashboardHeader fullName={fullName} />
 
         <ProfileCard
-  fullName={fullName}
-  email={email}
-  college={college}
-  branch={branch}
-  phone={phone}
-/>
+          fullName={fullName}
+          email={email}
+          college={college}
+          branch={branch}
+          phone={phone}
+        />
 
         <StatsCards />
+
         <RecentActivity />
+
         <QuickActions />
 
       </div>
-
     </main>
   );
 }

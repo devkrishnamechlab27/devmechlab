@@ -1,7 +1,7 @@
 "use client";
-
+import Image from "next/image";
 import { useState } from "react";
-import { supabase } from "@/lib/supabase";
+import { supabase } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
@@ -10,7 +10,7 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-
+  
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
 
@@ -28,7 +28,10 @@ export default function LoginPage() {
       return;
     }
 
-    router.replace("/dashboard");
+    await supabase.auth.getSession();
+
+router.refresh();
+router.replace("/dashboard");
   }
 
   return (
