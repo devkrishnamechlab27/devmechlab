@@ -242,20 +242,35 @@ export async function POST(request: Request) {
         : new Date();
 
     /*
-     * VERIFICATION URL
-     */
+ * VERIFICATION URL
+ */
 
-    const origin =
-      process.env.NEXT_PUBLIC_SITE_URL ||
-      new URL(request.url).origin;
+const envSiteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL;
 
-    const verificationUrl =
-      `${origin}/verify/${certificate.certificate_number}`;
-      
-      console.log(
-          "CERTIFICATE VERIFICATION URL:",
-      verificationUrl
-      );
+const requestOrigin =
+  new URL(request.url).origin;
+
+console.log(
+  "CERT ENV SITE URL:",
+  envSiteUrl
+);
+
+console.log(
+  "CERT REQUEST ORIGIN:",
+  requestOrigin
+);
+
+const origin =
+  envSiteUrl || requestOrigin;
+
+const verificationUrl =
+  `${origin}/verify/${certificate.certificate_number}`;
+
+console.log(
+  "CERT FINAL VERIFICATION URL:",
+  verificationUrl
+);
 
     /*
      * UPDATE QR CODE
