@@ -252,6 +252,10 @@ export async function POST(request: Request) {
     const verificationUrl =
       `${origin}/verify/${certificate.certificate_number}`;
       
+      console.log(
+          "CERTIFICATE VERIFICATION URL:",
+      verificationUrl
+      );
 
     /*
      * UPDATE QR CODE
