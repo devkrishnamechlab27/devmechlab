@@ -245,13 +245,11 @@ export async function POST(request: Request) {
  * VERIFICATION URL
  */
 
-const origin =
-  process.env.NODE_ENV === "production"
-    ? "https://devmechlab.vercel.app"
-    : new URL(request.url).origin;
-
 const verificationUrl =
-  `${origin}/verify/${certificate.certificate_number}`;
+  `${process.env.NODE_ENV === "production"
+    ? "https://devmechlab.vercel.app"
+    : new URL(request.url).origin
+  }/verify/${certificate.certificate_number}`;
 
 console.log(
   "CERTIFICATE VERIFICATION URL:",
