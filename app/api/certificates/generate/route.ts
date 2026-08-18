@@ -241,37 +241,22 @@ export async function POST(request: Request) {
         ? new Date(certificate.issued_at)
         : new Date();
 
-    /*
+   /*
  * VERIFICATION URL
  */
 
-const envSiteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL;
-
-const requestOrigin =
-  new URL(request.url).origin;
-
-console.log(
-  "CERT ENV SITE URL:",
-  envSiteUrl
-);
-
-console.log(
-  "CERT REQUEST ORIGIN:",
-  requestOrigin
-);
-
 const origin =
-  envSiteUrl || requestOrigin;
+  process.env.NODE_ENV === "production"
+    ? "https://devmechlab.vercel.app"
+    : new URL(request.url).origin;
 
 const verificationUrl =
   `${origin}/verify/${certificate.certificate_number}`;
 
 console.log(
-  "CERT FINAL VERIFICATION URL:",
+  "CERTIFICATE VERIFICATION URL:",
   verificationUrl
 );
-
     /*
      * UPDATE QR CODE
      */
