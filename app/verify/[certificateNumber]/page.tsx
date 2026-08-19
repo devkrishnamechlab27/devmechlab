@@ -1,4 +1,4 @@
-import { createClient } from "@/lib/supabase/server";
+import { supabaseAdmin } from "@/lib/supabase/admin";
 import { notFound } from "next/navigation";
 
 interface Props {
@@ -12,7 +12,7 @@ export default async function VerifyCertificatePage({
 }: Props) {
   const { certificateNumber } = await params;
 
-  const supabase = await createClient();
+const supabase = supabaseAdmin;
 
   const { data: certificate, error } = await supabase
     .from("certificates")
