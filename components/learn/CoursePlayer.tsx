@@ -266,13 +266,12 @@ useEffect(() => {
   }
 
   return (
-    <main className="min-h-screen bg-slate-950 text-white">
+    <main className="h-screen overflow-hidden bg-slate-950 text-white">
 
-      <div className="grid lg:grid-cols-4">
-
+      <div className="grid h-full min-h-0 lg:grid-cols-4">
         {/* LEFT — LESSONS */}
 
-        <aside className="border-r border-slate-800 bg-slate-900 min-h-screen p-6">
+        <aside className="min-h-0 h-full overflow-y-auto border-r border-slate-800 bg-slate-900 p-6">
 
           <h2 className="text-2xl font-bold mb-2">
             {course.title}
@@ -342,7 +341,7 @@ useEffect(() => {
 
         {/* RIGHT — COURSE CONTENT */}
 
-        <section className="lg:col-span-3 p-6 md:p-10">
+        <section className="min-h-0 h-full overflow-y-auto lg:col-span-3 p-6 md:p-10">
 
           {/* LESSON HEADER */}
 
