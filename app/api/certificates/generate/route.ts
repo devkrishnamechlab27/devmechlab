@@ -245,16 +245,15 @@ export async function POST(request: Request) {
  * VERIFICATION URL
  */
 
-const verificationUrl =
-  `${process.env.NODE_ENV === "production"
-    ? "https://devmechlab.vercel.app"
-    : new URL(request.url).origin
-  }/verify/${certificate.certificate_number}`;
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ||
+  new URL(request.url).origin;
 
-console.log(
-  "CERTIFICATE VERIFICATION URL:",
-  verificationUrl
-);
+const verificationUrl =
+  `${siteUrl}/verify/${certificate.certificate_number}`;
+
+console.log("SITE URL:", process.env.NEXT_PUBLIC_SITE_URL);
+console.log("VERIFICATION URL:", verificationUrl);
     /*
      * UPDATE QR CODE
      */
@@ -436,7 +435,8 @@ page.drawText("CERTIFICATE NO.", {
 
 const certificateNumber = certificate.certificate_number;
 
-const rightMargin = 30;
+const certificateX = 675;
+
 const maxWidth = 180;
 
 let certificateNumberSize = 10;
@@ -451,20 +451,13 @@ while (
   certificateNumberSize -= 0.5;
 }
 
-const certificateNumberWidth =
-  fontBold.widthOfTextAtSize(
-    certificateNumber,
-    certificateNumberSize
-  );
-
 page.drawText(certificateNumber, {
-  x: page.getWidth() - rightMargin - certificateNumberWidth,
+  x: certificateX,
   y: height - 65,
   size: certificateNumberSize,
   font: fontBold,
   color: blue,
 });
-
 /*
  * TOP-LEFT MEDAL — REFERENCE IMAGE
  */
