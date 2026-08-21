@@ -204,7 +204,7 @@ export async function POST(request: Request) {
         .toUpperCase();
 
       const certificateNumber =
-        `DML-${course.slug.toUpperCase()}-${year}-${randomPart}`;
+        `DML-${course.id}-${year}-${randomPart}`;
 
       const { data: newCertificate, error: insertError } =
         await supabase
@@ -434,16 +434,36 @@ page.drawText("CERTIFICATE NO.", {
   color: gray,
 });
 
-page.drawText(
-  certificate.certificate_number,
-  {
-    x: 675,
-    y: height - 65,
-    size: 10,
-    font: fontBold,
-    color: blue,
-  }
-);
+const certificateNumber = certificate.certificate_number;
+
+const rightMargin = 30;
+const maxWidth = 180;
+
+let certificateNumberSize = 10;
+
+while (
+  fontBold.widthOfTextAtSize(
+    certificateNumber,
+    certificateNumberSize
+  ) > maxWidth &&
+  certificateNumberSize > 7
+) {
+  certificateNumberSize -= 0.5;
+}
+
+const certificateNumberWidth =
+  fontBold.widthOfTextAtSize(
+    certificateNumber,
+    certificateNumberSize
+  );
+
+page.drawText(certificateNumber, {
+  x: page.getWidth() - rightMargin - certificateNumberWidth,
+  y: height - 65,
+  size: certificateNumberSize,
+  font: fontBold,
+  color: blue,
+});
 
 /*
  * TOP-LEFT MEDAL — REFERENCE IMAGE
