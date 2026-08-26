@@ -1,6 +1,6 @@
 import { supabase } from "@/lib/supabase/client";
 import { notFound } from "next/navigation";
-
+import InternshipPaymentButton from "@/components/InternshipPaymentButton";
 
 interface Props {
   params: Promise<{
@@ -73,11 +73,7 @@ export default async function CheckoutPage({ params }: Props) {
               {internship.price}
             </h2>
 
-            <button
-              className="w-full mt-8 bg-blue-600 hover:bg-blue-700 py-4 rounded-xl text-xl font-bold"
-            >
-              Proceed to Payment
-            </button>
+            <InternshipPaymentButton internship={internship} />
 
             <p className="text-gray-500 text-sm mt-6 text-center">
               Secure checkout powered by DevMechLab

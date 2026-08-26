@@ -42,7 +42,9 @@ export default function CourseCard({ course }: CourseCardProps) {
         </p>
 
         <p className="mt-4 font-bold text-green-400">
-          {course.price}
+          {course.price === "FREE"
+             ? "FREE"
+             : `₹${course.price}`}
         </p>
 
         <Link

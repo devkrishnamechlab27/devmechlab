@@ -21,7 +21,7 @@ export default function DashboardPage() {
   const [college, setCollege] = useState("");
   const [branch, setBranch] = useState("");
   const [phone, setPhone] = useState("");
-
+  const [role, setRole] = useState("student");
   useEffect(() => {
     async function loadDashboard() {
       const {
@@ -45,13 +45,14 @@ export default function DashboardPage() {
         console.error(error);
       }
 
-      if (data) {
-        setFullName(data.full_name ?? "");
-        setCollege(data.college ?? "");
-        setBranch(data.branch ?? "");
-        setPhone(data.phone ?? "");
-      }
-
+     if (data) {
+  setFullName(data.full_name ?? "");
+  setCollege(data.college ?? "");
+  setBranch(data.branch ?? "");
+  setPhone(data.phone ?? "");
+  setRole(data.role ?? "student");
+}
+  console.log("CURRENT USER ROLE:", data?.role);
       setLoading(false);
     }
 

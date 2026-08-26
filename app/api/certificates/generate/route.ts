@@ -4,7 +4,7 @@ import { PDFDocument, rgb, StandardFonts } from "pdf-lib";
 import QRCode from "qrcode";
 import fs from "fs/promises";
 import path from "path";
-
+import crypto from "crypto";
 export async function POST(request: Request) {
   try {
     const supabase = await createClient();
@@ -196,15 +196,15 @@ export async function POST(request: Request) {
      */
 
     if (!certificate) {
-      const year = new Date().getFullYear();
+     const year = new Date().getFullYear();
 
-      const randomPart = Math.random()
-        .toString(36)
-        .substring(2, 8)
-        .toUpperCase();
+const randomPart = crypto
+  .randomBytes(6)
+  .toString("hex")
+  .toUpperCase();
 
-      const certificateNumber =
-        `DML-${course.id}-${year}-${randomPart}`;
+const certificateNumber =
+  `DML-${course.id}-${year}-${randomPart}`;
 
       const { data: newCertificate, error: insertError } =
         await supabase
@@ -218,16 +218,51 @@ export async function POST(request: Request) {
           .single();
 
       if (insertError || !newCertificate) {
-        console.error(
-          "CERTIFICATE INSERT ERROR:",
-          insertError
-        );
+  /*
+   * A concurrent request may have created
+   * the certificate first.
+   *
+   * PostgreSQL error 23505 = unique violation.
+   */
+  if (insertError?.code === "23505") {
+    const { data: existingCertificate, error: retryError } =
+      await supabase
+        .from("certificates")
+        .select("*")
+        .eq("user_id", user.id)
+        .eq("course_id", courseId)
+        .maybeSingle();
 
-        return NextResponse.json(
-          { error: "Unable to create certificate." },
-          { status: 500 }
-        );
-      }
+    if (retryError || !existingCertificate) {
+      console.error(
+        "CERTIFICATE RETRY LOAD ERROR:",
+        retryError
+      );
+
+      return NextResponse.json(
+        {
+          error:
+            "Certificate already exists, but could not be loaded.",
+        },
+        { status: 500 }
+      );
+    }
+
+    certificate = existingCertificate;
+  } else {
+    console.error(
+      "CERTIFICATE INSERT ERROR:",
+      insertError
+    );
+
+    return NextResponse.json(
+      { error: "Unable to create certificate." },
+      { status: 500 }
+    );
+  }
+} else {
+  certificate = newCertificate;
+}
 
       certificate = newCertificate;
     }
