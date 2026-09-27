@@ -45,7 +45,7 @@ export default function Navbar() {
     { title: "Internships", href: "/internships" },
     { title: "Certificates", href: "/certificates" },
     { title: "About", href: "/about" },
-    { title: "Contact", href: "/contact" },
+    
   ];
 
   return (

@@ -1,5 +1,5 @@
 "use client";
-
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { Rocket, Play } from "lucide-react";
 
@@ -38,19 +38,23 @@ export default function Hero() {
             Cryogenics, Python, SQL and emerging technologies.
           </p>
 
-          <div className="mt-10 flex flex-wrap gap-5">
+         <div className="flex flex-wrap gap-5 mt-8">
 
-            <button className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 hover:scale-105 transition-all duration-300 px-8 py-4 rounded-xl text-lg font-semibold shadow-lg">
-             <Rocket size={22} />
-             Explore Courses
-            </button>
+  <Link
+    href="/courses"
+    className="bg-blue-600 hover:bg-blue-700 transition px-8 py-4 rounded-xl font-bold text-lg inline-flex items-center gap-3"
+  >
+    🚀 Explore Courses
+  </Link>
 
-            <button className="flex items-center gap-2 border border-white hover:bg-white hover:text-slate-900 hover:scale-105 transition-all duration-300 px-8 py-4 rounded-xl text-lg">
-             <Play size={20} />
-            Watch Demo
-            </button>
+  <Link
+    href="/watch-demo"
+    className="border border-white hover:bg-white hover:text-slate-950 transition px-8 py-4 rounded-xl font-bold text-lg inline-flex items-center gap-3"
+  >
+    ▶ Watch Demo
+  </Link>
 
-          </div>
+</div>
         </motion.div>
 
         {/* Right Side */}

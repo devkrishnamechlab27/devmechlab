@@ -240,7 +240,7 @@ if (error || !internship) {
     </div>
 
    <a
-  href={`/internships/checkout/${internship.slug}`}
+ href={`/internships/checkout/${internship.slug}`}
   className="block w-full mt-8 bg-blue-600 hover:bg-blue-700 py-4 rounded-xl font-bold text-lg text-center transition"
 >
   Continue / Enroll

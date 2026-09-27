@@ -1,5 +1,4 @@
-import { Mail, Phone, MapPin, } from "lucide-react";
-import { BadgeCheck } from "lucide-react";
+import { Mail, Phone, MapPin, BadgeCheck } from "lucide-react";
 
 import {
   FaLinkedin,
@@ -11,7 +10,7 @@ export default function Footer() {
   return (
     <footer className="bg-slate-950 border-t border-slate-800 text-gray-300">
 
-      <div className="max-w-7xl mx-auto px-8 py-16 grid md:grid-cols-4 gap-10">
+      <div className="max-w-7xl mx-auto px-8 py-16 grid md:grid-cols-3 gap-10">
 
         {/* Brand */}
         <div>
@@ -30,22 +29,6 @@ export default function Footer() {
 
         </div>
 
-        {/* Quick Links */}
-        <div>
-
-          <h3 className="text-xl font-bold text-white mb-5">
-            Quick Links
-          </h3>
-
-          <ul className="space-y-3">
-            <li><a href="#" className="hover:text-blue-400">Home</a></li>
-            <li><a href="#" className="hover:text-blue-400">Courses</a></li>
-            <li><a href="#" className="hover:text-blue-400">Internships</a></li>
-            <li><a href="#" className="hover:text-blue-400">Certificates</a></li>
-          </ul>
-
-        </div>
-
         {/* Contact */}
         <div>
 
@@ -56,26 +39,28 @@ export default function Footer() {
           <div className="space-y-4">
 
             <div className="flex items-center gap-3">
-              <Mail size={18}/>
+              <Mail size={18} />
               info@devmechlab.com
             </div>
 
             <div className="flex items-center gap-3">
-              <Phone size={18}/>
+              <Phone size={18} />
               +91 9570204678
             </div>
 
             <div className="flex items-center gap-3">
-              <MapPin size={18}/>
+              <MapPin size={18} />
               India
             </div>
-          <div className="flex items-center gap-3">
+
+            <div className="flex items-center gap-3">
               <BadgeCheck size={18} />
-               <span>
-                 Designed & Developed by{" "}
-              <span className="font-semibold text-blue-400">
-                     K.K. Ranjan
-              </span>
+
+              <span>
+                Designed & Developed by{" "}
+                <span className="font-semibold text-blue-400">
+                  K.K. Ranjan
+                </span>
               </span>
             </div>
 
@@ -92,17 +77,29 @@ export default function Footer() {
 
           <div className="flex gap-5">
 
-            <a href="#" className="hover:text-blue-400">
-              <FaLinkedin size={28}/>
-            </a>
+            {/* LinkedIn */}
+            <a
+  href="https://www.linkedin.com/company/devmechlab-official/"
+  target="_blank"
+  rel="noopener noreferrer"
+  aria-label="DevMechLab LinkedIn"
+  className="hover:text-blue-400 transition"
+>
+  <FaLinkedin size={28} />
+</a>
 
-            <a href="#" className="hover:text-pink-500">
-              <FaInstagram size={28}/>
-            </a>
+            {/* Instagram */}
+            <a
+  href="https://www.instagram.com/devmechlab"
+  target="_blank"
+  rel="noopener noreferrer"
+  aria-label="DevMechLab Instagram"
+  className="hover:text-pink-500 transition"
+>
+  <FaInstagram size={28} />
+</a>
 
-            <a href="#" className="hover:text-white">
-              <FaGithub size={28}/>
-            </a>
+            
 
           </div>
 
@@ -111,9 +108,7 @@ export default function Footer() {
       </div>
 
       <div className="border-t border-slate-800 text-center py-6 text-gray-500">
-
         © 2026 DevMechLab. All Rights Reserved.
-
       </div>
 
     </footer>
