@@ -79,27 +79,36 @@ export default function Footer() {
 
             {/* LinkedIn */}
             <a
-  href="https://www.linkedin.com/company/devmechlab-official/"
-  target="_blank"
-  rel="noopener noreferrer"
-  aria-label="DevMechLab LinkedIn"
-  className="hover:text-blue-400 transition"
->
-  <FaLinkedin size={28} />
-</a>
+                 href="https://www.linkedin.com/company/devmechlab-official/"
+                 target="_blank"
+                 rel="noopener noreferrer"
+                 aria-label="DevMechLab LinkedIn"
+                 className="hover:text-blue-400 transition"
+             >
+                 <FaLinkedin size={28} />
+                </a>
 
             {/* Instagram */}
             <a
-  href="https://www.instagram.com/devmechlab"
-  target="_blank"
-  rel="noopener noreferrer"
-  aria-label="DevMechLab Instagram"
-  className="hover:text-pink-500 transition"
->
-  <FaInstagram size={28} />
-</a>
+              href="https://www.instagram.com/devmechlab"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="DevMechLab Instagram"
+              className="hover:text-pink-500 transition"
+            >
+             <FaInstagram size={28} />
+             </a>
 
-            
+             {/* GitHub */}
+             <a
+                 href="https://github.com/devmechlab"
+                 target="_blank"
+                 rel="noopener noreferrer"
+                 className="hover:text-white transition"
+                 aria-label="DevMechLab GitHub"
+              >
+                  <FaGithub size={28} />
+                  </a>
 
           </div>
 
