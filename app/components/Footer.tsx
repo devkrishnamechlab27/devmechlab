@@ -4,6 +4,7 @@ import {
   FaLinkedin,
   FaInstagram,
   FaGithub,
+  FaYoutube,
 } from "react-icons/fa";
 
 export default function Footer() {
@@ -109,7 +110,15 @@ export default function Footer() {
               >
                   <FaGithub size={28} />
                   </a>
-
+               <a
+    href="https://www.youtube.com/@devmechlab"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="hover:text-red-500 transition-colors"
+    aria-label="DevMechLab YouTube"
+  >
+    <FaYoutube size={28} />
+  </a>
           </div>
 
         </div>
